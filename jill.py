@@ -28,7 +28,7 @@ def user_passwords():
             break                           #-----------------  Ends the loop                                                                                                  
                                    
 
-        login = (user_name, original_word)     #--------------  Puts the user's name and password into two separate strings
+        login = (user_name, user_password)     #--------------  Puts the user's name and password into two separate strings
         login = ":".join(login)                #--------------  Combines the two strings by replacing the space with ':'
         print(login)
 

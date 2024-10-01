@@ -2,7 +2,7 @@ import hashlib        #---------------------------------------  Allows the progr
 import argparse       #---------------------------------------  Allows the program to become a module
 
 def user_passwords():
-    c = 0
+
     file = open("passwords.txt", "r")       #-----------------  Opens the file containing the names and passwords
 
     for word in file:                   #---\ 
@@ -14,7 +14,8 @@ def user_passwords():
 
         file = open("wordlist.txt", "r")        #-------------  Opens the file containing a list of words that are possible passwords
 
-        for word in file:       #--------------------\
+        for word in file:
+            original_word = word       #-------------\
             sha256_hash = hashlib.sha256()     #      \
             #                                          \
             sha256_hash.update(word.encode('utf-8'))#   |-----  Converts each word in the word list into a sha256 hash, and defines the hashed word as 'hashed_pass'
@@ -22,21 +23,14 @@ def user_passwords():
             word = sha256_hash.hexdigest()  #         /                     
             hashed_pass = word      #----------------/                  
 
-
-        while hashed_pass[c] != user_password: #----------/---  Checks to see if any of the hashed words match the hashes of the user passwords                 -----------------|                  
-            c = c + 1                          #---------/                                                                                                                       |
-        #                                                                                                                                                                        |
-        if hashed_pass[c] == user_password:    #-------------- Tells the program what to do if a match is made                                                                   |
-            file = open("wordlist.txt", "r")   #--------------  Reopens the word list to access the possible passwords before they were converted into hashes                    |-------------------  THIS CODE DOES NOT WORK 
-            for word in file:                  #------\                                                                                                                          |
-                hashed_pass[c] = word[c]#              |------  Changes the hash of the user password to be the corresponding word from the word list                            |
-                user_name = word[c]            #------/                                                                                                                          |
-            break                              #                                                                                                                -----------------|
+        if hashed_pass == user_password:    #-----------------  Tells the program what to do if a match is made                                                                   
+            user_password = original_word   #-----------------  If a match is made, the user_password becomes the corresponding word from the word list                                                                                                                    
+            break                           #-----------------  Ends the loop                                                                                                  
                                    
 
-        login = (user_name, user_password)     #----------  Puts the user's name and password into two separate strings
-        login = ":".join(login)                #----------  Combines the two strings by replacing the space with ':'
-
+        login = (user_name, original_word)     #--------------  Puts the user's name and password into two separate strings
+        login = ":".join(login)                #--------------  Combines the two strings by replacing the space with ':'
+        print(login)
 
     file.close()
         
